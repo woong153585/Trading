@@ -1,0 +1,4 @@
+binance==2.0.0
+tensorflow==2.11.0
+pandas==1.5.3
+python-dotenv==0.21.1
