@@ -15,9 +15,6 @@ from tensorflow.keras.layers import LSTM, Dense
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
-# Binance 클라이언트 초기화
-client = Client(api_key, api_secret)
-
 # 환경 변수 로드
 load_dotenv()
 api_key = os.getenv('BINANCE_API_KEY')
@@ -29,7 +26,7 @@ client = Client(api_key, api_secret)
 # 모델 파라미터 설정
 SYMBOL = 'XRPUSDT'
 MODEL_PATH = 'xrp_lstm.h5'
-SEQ_LENGTH = 60
+SEQ_LENGTH = 120
 
 # LSTM 모델 초기화
 model = Sequential()
@@ -38,9 +35,9 @@ model.add(LSTM(50))
 model.add(Dense(1))
 model.compile(optimizer='adam', loss='mse')
 
-# 과거 데이터 1000개 이상 수집
+# 과거 데이터 10000개 이상 수집
 klines = client.get_historical_klines(SYMBOL, '1m', '1000 minutes ago UTC')
-prices = [float(k[4]) for k in klines]
+prices = [float(k[5]) for k in klines]
 
 # 데이터 전처리
 scaler = MinMaxScaler(feature_range=(0, 1))
@@ -55,7 +52,7 @@ X_train = np.array(X_train).reshape(-1, SEQ_LENGTH, 1)
 y_train = np.array(y_train)
 
 # 모델 학습
-model.fit(X_train, y_train, epochs=50, batch_size=32)
+model.fit(X_train, y_train, epochs=500, batch_size=32)
 save_model(model, MODEL_PATH)
 
 print(f"모델이 성공적으로 학습되었으며 {MODEL_PATH}에 저장되었습니다.")
