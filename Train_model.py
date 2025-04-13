@@ -13,6 +13,8 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential, save_model
 from tensorflow.keras.layers import LSTM, Dense
 
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+
 # Binance 클라이언트 초기화
 client = Client(api_key, api_secret)
 
