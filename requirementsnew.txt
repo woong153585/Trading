@@ -1,0 +1,4 @@
+binance
+tensorflow
+pandas
+python-dotenv
