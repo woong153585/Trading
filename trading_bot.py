@@ -16,6 +16,8 @@ from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.layers import LSTM, Dense
 import requests
 
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+
 TELEGRAM_TOKEN = '7907965642:AAGcnrc8iKgY7cHYcwEFgVEuY5iUQp7ySto'
 CHAT_ID = '@wooooooong'
 
