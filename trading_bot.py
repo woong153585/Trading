@@ -6,6 +6,7 @@
 
 import os
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import time
 import json
 import numpy as np
@@ -16,6 +17,7 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.layers import LSTM, Dense
 import requests
+import logging
 
 TELEGRAM_TOKEN = '7907965642:AAGcnrc8iKgY7cHYcwEFgVEuY5iUQp7ySto'
 CHAT_ID = '@wooooooong'
@@ -33,6 +35,9 @@ def send_telegram_message(message):
     except Exception as e:
         print(f"Telegram 알림 오류: {str(e)}")
         return False
+        
+logging.basicConfig(level=logging.INFO)
+logging.info("Trading bot is starting...")
 
 # 환경 변수 로드
 load_dotenv()
