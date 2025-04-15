@@ -10,14 +10,15 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import time
 import json
 import numpy as np
-import pandas as pd
 from binance import Client, BinanceSocketManager
 from dotenv import load_dotenv
 from sklearn.preprocessing import MinMaxScaler
-from tensorflow.keras.models import Sequential, load_model
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.models import load_model
 from tensorflow.keras.layers import LSTM, Dense
 import requests
 import logging
+import pandas as pd
 
 TELEGRAM_TOKEN = '7907965642:AAGcnrc8iKgY7cHYcwEFgVEuY5iUQp7ySto'
 CHAT_ID = '@wooooooong'
