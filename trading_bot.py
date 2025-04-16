@@ -3,12 +3,9 @@
 
 # In[ ]:
 
-if tf.config.list_physical_devices('GPU'):
-    physical_devices = tf.config.list_physical_devices('GPU')
-    tf.config.experimental.set_memory_growth(physical_devices[0], True)
-
 import os
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import time
 import json
 import numpy as np
@@ -27,6 +24,10 @@ mixed_precision.set_global_policy(policy)
 import requests
 import logging
 import pandas as pd
+
+if tf.config.list_physical_devices('GPU'):
+    physical_devices = tf.config.list_physical_devices('GPU')
+    tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 TELEGRAM_TOKEN = '7907965642:AAGcnrc8iKgY7cHYcwEFgVEuY5iUQp7ySto'
 CHAT_ID = '@wooooooong'
