@@ -9,7 +9,6 @@ if tf.config.list_physical_devices('GPU'):
 
 import os
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import time
 import json
 import numpy as np
