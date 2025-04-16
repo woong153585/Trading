@@ -207,7 +207,7 @@ def main():
     
     # 초기 과거 데이터를 넉넉하게 로드 (최소 120개)
     print("과거 데이터 로드 중...")
-    klines = client.get_historical_klines(SYMBOL, Client.KLINE_INTERVAL_1MINUTE, "120 minutes ago UTC")
+    klines = client.get_historical_klines(SYMBOL, Client.KLINE_INTERVAL_1MINUTE, "240 minutes ago UTC")
     
     # 데이터 확인
     print(f"가져온 과거 데이터: {len(klines)}개")
@@ -251,7 +251,7 @@ def main():
                 print(f"데이터 수집 중... {len(price_data)}/{SEQ_LENGTH + 10}개")
             
             # 대기 시간
-            time.sleep(60)
+            time.sleep(30)
                 
         except Exception as e:
             print(f"메인 루프 오류: {str(e)}")
