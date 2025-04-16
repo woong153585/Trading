@@ -3,6 +3,9 @@
 
 # In[ ]:
 
+if tf.config.list_physical_devices('GPU'):
+    physical_devices = tf.config.list_physical_devices('GPU')
+    tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 import os
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
@@ -14,9 +17,14 @@ from binance import Client, BinanceSocketManager
 from dotenv import load_dotenv
 from sklearn.preprocessing import MinMaxScaler
 import tensorflow as tf
+from tensorflow.keras import backend as K
 Sequential = tf.keras.models.Sequential
 load_model = tf.keras.models.load_model
+K.clear_session()
 from tensorflow.keras.layers import LSTM, Dense
+from tensorflow.keras import mixed_precision
+policy = mixed_precision.Policy('mixed_float16')
+mixed_precision.set_global_policy(policy)
 import requests
 import logging
 import pandas as pd
@@ -67,7 +75,9 @@ def initialize_model():
         def mse(y_true, y_pred):
             return tf.reduce_mean(tf.square(y_true - y_pred))
             
-        return load_model(MODEL_PATH, custom_objects={'mse': mse})
+        # 모델 로드 후 메모리 효율성을 위해 세션 정리
+        model = load_model(MODEL_PATH, custom_objects={'mse': mse})
+        return model
     
     model = Sequential()
     model.add(LSTM(50, return_sequences=True, input_shape=(SEQ_LENGTH, 1)))
@@ -88,22 +98,22 @@ def preprocess_data(data):
     
     try:
         # 데이터 확인 로그 추가
-        print(f"전처리 데이터 크기: {len(data)}")
+        data_values = data.values.reshape(-1, 1)
         
         # 데이터 형태 변환
         data_values = data.values.reshape(-1, 1)
         scaled = scaler.fit_transform(data_values)
         
-        X = []
+        X = np.zeros((len(scaled) - SEQ_LENGTH, SEQ_LENGTH, 1))
         for i in range(SEQ_LENGTH, len(scaled)):
-            X.append(scaled[i-SEQ_LENGTH:i, 0])
-        
+            X[i-SEQ_LENGTH] = scaled[i-SEQ_LENGTH:i, 0].reshape(-1, 1)
+
         # 결과 확인
         if len(X) == 0:
             print("경고: 시퀀스를 생성할 수 없습니다")
             return np.array([]), None
             
-        return np.array(X), scaler
+        return X, scaler
     except Exception as e:
         print(f"데이터 전처리 오류: {str(e)}")
         return np.array([]), None
