@@ -13,8 +13,9 @@ import numpy as np
 from binance import Client, BinanceSocketManager
 from dotenv import load_dotenv
 from sklearn.preprocessing import MinMaxScaler
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.models import load_model
+import tensorflow as tf
+Sequential = tf.keras.models.Sequential
+load_model = tf.keras.models.load_model
 from tensorflow.keras.layers import LSTM, Dense
 import requests
 import logging
